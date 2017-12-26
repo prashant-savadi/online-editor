@@ -96,10 +96,10 @@ export class FileBrowserComponent implements OnInit {
   }
 
   // ------------ publish check
-  // t($event): void {
-  //   console.log($event);
-  //   this.codeStatus.emit('This is some data from file browser::: ' + $event.node.value);
-  // }
+  t($event): void {
+    console.log($event);
+    this.codeStatus.emit('This is some data from file browser::: ' + $event.node.value);
+  }
   // ------------
 
   handleSelected($event): void {
