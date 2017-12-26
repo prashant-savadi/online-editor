@@ -10,6 +10,7 @@ export class FileBrowserComponent implements OnInit {
 
   @Output()
   codeStatus: EventEmitter<string> = new EventEmitter<string>();
+  settings = '';
 
   public tree: TreeModel = {
     value: 'Root Folder',

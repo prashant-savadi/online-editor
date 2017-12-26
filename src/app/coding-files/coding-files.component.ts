@@ -10,7 +10,7 @@ export class CodingFilesComponent implements OnInit {
 
   codeStatus =  '';
 
-  tex: string;
+  text: string;
   // text = 'class TestDemo\n' +
   //   '{\n' +
   //   '    public void testCaseDemo1()\n' +
