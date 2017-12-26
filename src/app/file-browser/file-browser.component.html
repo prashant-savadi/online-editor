@@ -1,0 +1,16 @@
+<div class="scrollbar scrollbar-primary" id="sidescrollbar">
+  <div id="container">
+    <tree
+      [tree]="tree"
+      [settings]="settings"
+      (nodeRemoved)="handleRemoved($event)"
+      (nodeRenamed)="handleRenamed($event)"
+      (nodeSelected)="handleSelected($event)"
+      (nodeMoved)="handleMoved($event)"
+      (nodeCreated)="handleCreated($event)"
+      (nodeExpanded)="handleExpanded($event)"
+      (nodeCollapsed)="handleCollapsed($event)"
+      (loadNextLevel)="handleNextLevel($event)">
+    </tree>
+  </div>
+</div>

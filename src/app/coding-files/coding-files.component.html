@@ -1,0 +1,8 @@
+<ace-editor #highlight
+            [text]="text"
+            mode="javascript"
+            theme="eclipse"
+            (textChanged)="onChange($event)"
+            [autoUpdateContent]="true"
+            style="min-height: 600px; width:80%; overflow: auto;"></ace-editor>
+<app-file-browser (codeStatus)="text=$event"></app-file-browser>
