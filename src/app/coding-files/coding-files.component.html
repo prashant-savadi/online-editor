@@ -1,8 +1,70 @@
+<div class="container">
+  <div class="scrollmenu">
+    <span *ngFor="let tab of tabs" class="{{tab.active ? 'active' : ''}}">
+      <a class="tabnames" href="#{{tab.name}}"><span id="something">{{tab.name}} &nbsp;
+        <i class="fa fa-arrows-alt" aria-hidden="true" (click)="someAction($event)"></i>
+      </span></a>
+    </span>
+  </div>
+</div>
+
+<nav class="navbar navbar-default" id="smallnavbar">
+  <div class="container-fluid">
+    <!-- header  -->
+    <div class="navbar-header">
+      <!--<a class="navbar-brand" href="#">Edit your code here:</a>-->
+      <ul class="nav navbar-nav">
+        <li class=''>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-arrows-alt" aria-hidden="true" title="Close"></i><span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Close</a></li>
+            <li><a href="#"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Close All</a></li>
+            <li><a href="#"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Close Others</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- items -->
+    <div class="collapse navbar-collapse" id="topNavBar">
+      <ul class="nav navbar-nav navbar-right">
+        <li class=''>
+          <a href="#">
+            <i class="fa fa-window-maximize" aria-hidden="true" title="Maximize"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!--<div class="menu-items">-->
+  <!--<div>-->
+    <!--&lt;!&ndash;<li class=''>&ndash;&gt;-->
+      <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+        <!--<i class="fa fa-window-close-o fa-2x" aria-hidden="true"></i><span class="caret"></span>-->
+      <!--</a>-->
+      <!--<ul class="dropdown-menu">-->
+        <!--<li><a href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i> Close</a></li>-->
+        <!--<li><a href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i> Close Others</a></li>-->
+        <!--<li><a href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i> Close All</a></li>-->
+      <!--</ul>-->
+    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#">&ndash;&gt;-->
+      <!--&lt;!&ndash;<i class="fa fa-stop" aria-hidden="true"></i> Stop All&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--original-->
 <ace-editor #highlight
             [text]="text"
             mode="javascript"
             theme="eclipse"
             (textChanged)="onChange($event)"
             [autoUpdateContent]="true"
-            style="min-height: 600px; width:80%; overflow: auto;"></ace-editor>
+            [style.top.px]="fromTop"
+            style="min-height: 600px; width:1240px; overflow: auto;"></ace-editor>
 <app-file-browser (codeStatus)="text=$event"></app-file-browser>

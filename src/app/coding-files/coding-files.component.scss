@@ -1,10 +1,81 @@
 ace-editor {
   position: absolute;
-  left: 250px;
-  width: 50px;
-  top: 10px;
-  //top: 40px;
+  left: 255px;
+  width: 80px;
+  top: 60px;
   margin-top: 50px;
   min-height: 200px;
+}
 
+.container {
+  position: absolute;
+  left: 240px;
+  width: 1120px;
+  top: 37px;
+  //top: 40px;
+  //margin-top: 50px;
+  //min-height: 200px;
+  border-radius: 50px;
+  //padding: 1px;
+}
+
+.navbar-default{
+  position: absolute;
+  left: 1349px;
+  width: 150px;
+  top: -15px;
+  //top: 40px;
+  margin-top: 50px;
+  //min-height: -5px;
+}
+.container> div > span> a {padding-top:5px !important; padding-bottom:5px !important; border-color: lightgray; border-style: solid; border-radius: 10px}
+
+.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+#smallnavbar {min-height: 48px !important}
+
+.container-fluid
+{
+  width: -30px;
+}
+
+scrollmenu {
+  width: 50px;
+}
+
+
+div.scrollmenu {
+  background-color: #F5F5F5;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+span{
+  color: #2E2E2E;
+}
+
+// Second approach
+
+.tabnames
+{
+  color: #2E2E2E;
+}
+
+a {
+  color: black;
+}
+
+.fa-window-close-o,.fa-arrows-alt {
+  color: red;
 }
