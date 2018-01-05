@@ -1,5 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {AppService} from '../app.service';
+import {TreeModelService} from '../tree-model.service';
+import {MatTabChangeEvent} from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
+import {forEach} from '@angular/router/src/utils/collection';
+import {MockServerService} from '../mock-server.service';
 
 @Component({
   selector: 'app-coding-files',
@@ -8,75 +13,174 @@ import {AppService} from '../app.service';
 })
 export class CodingFilesComponent implements OnInit {
 
-  codeStatus = '';
-  tabs: any[] = [];
-  fromTop = 20;
-  fromTopSmallNavBar = 5;
-  numberOfTabs = 0;
+
+  @Input()
+  selectedTab: string;
+
+  @Output()
+  focusChange: EventEmitter<MatTabChangeEvent>;
+
+  @ViewChild('editor') editor;
+  options: any = {maxLines: 1000, printMargin: false};
 
   text: string;
-  // text = 'class TestDemo\n' +
-  //   '{\n' +
-  //   '    public void testCaseDemo1()\n' +
-  //   '    {\n' +
-  //   '        Assertions.assertTrue("Checking value for true", true);\n' +
-  //   '    }\n' +
-  //   '}';
+  tabs: any[] = [];
+  fromTop = 0;
+  fromTopSmallNavBar = 0;
+  activeTabIndex = 0;
+  allFileCodesMap = new Map();
+  currentCode: string;
+  codeToUpdate: string;
+  showBar = false;
 
-  options: any = {maxLines: 1000, printMargin: false};
-  @ViewChild('editor') editor;
-
-  onChange(code) {
-    this.appService.setCode(code);
-    console.log('-------------------------------');
-    console.log(code);
-    console.log('-------------------------------');
+  constructor(private  appService: AppService, private treeModelService: TreeModelService, private  mockServerService: MockServerService) {
+    this.updateEditorPosition();
   }
 
-  // onChange(codeStatus) {
-  //   console.log('-------------------------------');
-  //   console.log(codeStatus);
-  //   console.log('-------------------------------');
-  // }
-
-
-  constructor(private  appService: AppService) {
-    // dummy code for second approach
-    this.numberOfTabs = 35;
-    for (let i = 1; i < this.numberOfTabs; i++) {
-      this.tabs.push({
-        name: 'Sample' + i + '.java',
-        active: i === 1 ? true : false
-      });
-    }
-    if ( this.numberOfTabs > 19) {
-
-      this.fromTop = this.fromTop + 15;
+  updateEditorPosition() {
+    let tabCount = this.tabs.length;
+    if (tabCount > 8) {
+      this.fromTop = 35;
+      this.fromTopSmallNavBar = 25;
+    } else if (tabCount === 0) {
+      this.fromTop = -17;
       this.fromTopSmallNavBar = this.fromTopSmallNavBar + 20;
+    } else if (tabCount > 0 && tabCount <= 8) {
+      this.fromTop = 20;
+      this.fromTopSmallNavBar = 5;
     }
     console.log(this.fromTop);
     console.log(this.fromTopSmallNavBar);
   }
 
-
   ngOnInit() {
-
-    // this.editor.getEditor().setOptions({
-    //   enableBasicAutocompletion: true
-    // });
-    //
-    // this.editor.getEditor().commands.addCommand({
-    //   name: 'showOtherCompletions',
-    //   bindKey: 'Ctrl-.',
-    //   exec: function (editor) {
-    //
-    //   }
-    // });
   }
 
-  someAction($event): void {
-    console.log('Cliked on X');
+  collectFileId($event) {
+    console.log('Collected File ID: ' + this.treeModelService.getFileName(Number($event)));
+    let selectedFileName = this.treeModelService.getFileName(Number($event));
+    // console.log('------------------------------- Map Size: ' + this.allFileCodesMap.size);
+    this.codeToUpdate = this.mockServerService.getFileCode(Number($event));
+    this.tabs.push({
+      name: selectedFileName,
+      code: this.codeToUpdate
+    });
+    this.activeTabIndex = this.tabs.length - 1;
+    this.displaySmallNavBar();
+    this.displayAllTabCodes();
+  }
+
+  sleep(seconds) {
+    let e = new Date().getTime() + (seconds * 1000);
+    while (new Date().getTime() <= e) {
+    }
+  }
+
+  getCodeInformation($event) {
+    let currentSelectedTab = this.tabs[this.activeTabIndex].name;
+    console.log('-------------------------------This is active tab name: ' + this.currentCode);
+    this.currentCode = $event;
+    this.allFileCodesMap.set(currentSelectedTab, this.currentCode);
+    console.log('------------------------------- Map Size: ' + this.allFileCodesMap.size);
+    console.log(this.currentCode);
+    this.displaySmallNavBar();
+    this.displayAllTabCodes();
+  }
+
+  displayAllTabCodes(): void {
+    console.log('------------------------------- final codes: started');
+    let allKeys = this.allFileCodesMap.keys();
+    this.allFileCodesMap.forEach((value: string, key: string) => {
+      console.log(key + ':  ' + value);
+    });
+    console.log('------------------------------- final codes: completed');
+  }
+
+  removeTab($event) {
     console.log($event);
+    console.log('-------------------------------: Called removeTab method');
+    console.log($event);
+    let tabName = '';
+    try {
+      tabName = $event.path[0].id;
+    } catch (Error) {
+      tabName = $event.explicitOriginalTarget.id;
+    }
+    console.log('Initial-------------------------');
+    console.log(this.tabs);
+    console.log('Initial-------------------------');
+    for (let i = 0; i < this.tabs.length; i++) {
+      console.log('Current tab name: ' + this.tabs[i].name);
+      if (this.tabs[i].name === tabName) {
+        console.log('Slicing the index: ' + i + ', And Tab Name: ' + this.tabs[i].name);
+        this.tabs.splice(i, 1);
+      }
+    }
+    console.log('Later *********************');
+    console.log(this.tabs);
+    console.log('Later *********************');
+    this.allFileCodesMap.delete(tabName);
+    // this.ngOnInit();
+    this.displaySmallNavBar();
+  }
+
+  closeTab(): void {
+    let currentSelectedTab = this.tabs[this.activeTabIndex].name;
+    if (this.tabs.length != 0) {
+      this.activeTabIndex = this.tabs.length - 1;
+    }
+    this.allFileCodesMap.delete(currentSelectedTab);
+    for (let i = 0; i < this.tabs.length; i++) {
+      console.log('Current tab name: ' + this.tabs[i].name);
+      if (this.tabs[i].name === currentSelectedTab) {
+        console.log('Slicing the index: ' + i + ', And Tab Name: ' + this.tabs[i].name);
+        this.tabs.splice(i, 1);
+      }
+    }
+    this.displaySmallNavBar();
+  }
+
+  closeAllTabs(): void {
+    this.allFileCodesMap.clear();
+    this.tabs = [];
+    this.showBar = false;
+
+  }
+
+  closeOtherTabs(): void {
+    let currentSelectedTab = this.tabs[this.activeTabIndex].name;
+    console.log('Current Selected Tab: ' + currentSelectedTab);
+
+    this.displayAllTabCodes();
+    this.tabs.forEach((tab: any) => {
+      console.log(tab.name);
+    });
+    this.allFileCodesMap.forEach((value: string, key: string) => {
+      if (key !== currentSelectedTab) {
+        console.log('Deleting: ' + key);
+        this.allFileCodesMap.delete(key);
+      }
+    });
+
+    this.displayAllTabCodes();
+    let allTabsLegth = this.tabs.length;
+    console.log('All tabs length: ' + allTabsLegth);
+    for (let i = allTabsLegth - 1; i >= 0; i--) {
+      console.log('Current tab name: ' + this.tabs[i].name);
+      if (this.tabs[i].name !== currentSelectedTab) {
+        console.log('Slicing the index: ' + i + ', And Tab Name: ' + this.tabs[i].name);
+        this.tabs.splice(i, 1);
+      }
+    }
+    this.displaySmallNavBar();
+  }
+
+  displaySmallNavBar(): void {
+    if (this.tabs.length > 0) {
+      this.showBar = true;
+    } else {
+      this.showBar = false;
+    }
   }
 
 }

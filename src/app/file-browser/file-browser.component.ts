@@ -1,5 +1,12 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {TreeModel} from 'ng2-tree';
+import {NodeMenuItemAction, TreeModel, TreeModelSettings} from 'ng2-tree';
+import {Tree} from 'ng2-tree';
+import {MockServerService} from '../mock-server.service';
+import {AppService} from '../app.service';
+import {_keyValueDiffersFactory} from '@angular/core/src/application_module';
+import {forEach} from '@angular/router/src/utils/collection';
+import index from '@angular/cli/lib/cli';
+import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface, PerfectScrollbarDirective} from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'app-file-browser',
@@ -9,395 +16,50 @@ import {TreeModel} from 'ng2-tree';
 export class FileBrowserComponent implements OnInit {
 
   @Output()
-  codeStatus: EventEmitter<string> = new EventEmitter<string>();
+  selectedFileIdParent: EventEmitter<string> = new EventEmitter<string>();
+
   settings = '';
+  config = '';
 
-  public tree: TreeModel = {
-    value: 'Root Folder',
-    id: 1,
-    children: [
-      {
-        value: 'Test Folder',
-        id: 2,
-        children: [
-          {
-            value: 'sample1.java',
-            id: 21
-          },
-          {
-            value: 'sample2.java',
-            id: 22
-          },
-          {
-            value: 'sample3.java',
-            id: 23
-          },
-          {
-            value: 'sample4.java',
-            id: 24
-          },
-          {
-            value: 'sample5.java',
-            id: 25
-          },
-          {
-            value: 'sample6.java',
-            id: 26
-          }
-        ]
-      },
-      {
-        value: 'sample7.java',
-        id: 27
-      },
-      {
-        value: 'sample8.java',
-        id: 28
-      },
-      {
-        value: 'sample9.java',
-        id: 29
-      },
-      {
-        value: 'sample10.java',
-        id: 30
-      },
-      {
-        value: 'sample11.java',
-        id: 31
-      },
-      {
-        value: 'Level two',
-        id: 32,
-        children: [
-          {
-            value: 'Level three',
-            id: 33,
-            children: [
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample14.java',
-                id: 35
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              {
-                value: 'sample13.java',
-                id: 34
-              },
-              ]
-          }]
-      }
-    ]
-  };
-
-  private lastFFSNodeId = 86;
-  newNode: Node;
-
+  public tree: TreeModel;
   @ViewChild('treeComponent') treeComponent;
 
-  constructor() {
+  constructor(private mockServerSevice: MockServerService) {
+    this.tree = mockServerSevice.getTreeModel();
   }
 
   // ------------ publish check
   t($event): void {
+    console.log('Test after deployment: started');
     console.log($event);
-    this.codeStatus.emit('This is some data from file browser::: ' + $event.node.value);
+    console.log('Element ID: ' + $event.node.id);
+    console.log('Test after deployment: completed');
   }
   // ------------
 
   handleSelected($event): void {
+    if (this.iFile($event)) {
+      this.selectedFileIdParent.emit(String($event.node.id));
+    }
+  }
+
+  collpaseAll(): void {
+    this.treeComponent.getControllerByNodeId(1).collapse();
+  }
+
+  expandAll(): void {
+    this.treeComponent.getControllerByNodeId(1).expand();
+  }
+
+  iFile($event): boolean {
+    console.log('-------------------isFile-------------started');
     console.log($event);
-    this.codeStatus.emit('This is some data from file browser::: ' + $event.node.value);
+    let allMenuItems = $event.node.menuItems;
+    console.log('Menu items length: ' + allMenuItems.length);
+    if (allMenuItems.length === 10) {
+      return true;
+    }
+    return false;
   }
 
   handleCollapsed($event): void {
@@ -407,7 +69,6 @@ export class FileBrowserComponent implements OnInit {
   handleExpanded($event): void {
     console.log($event);
   }
-
 
   handleRemoved($event): void {
     console.log($event);
@@ -457,4 +118,5 @@ export class FileBrowserComponent implements OnInit {
 
   ngOnInit() {
   }
+
 }

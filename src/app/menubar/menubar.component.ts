@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 
 @Component({
@@ -16,9 +16,9 @@ export class MenubarComponent implements OnInit {
 
   retriveCode() {
     let currentCode = this.appSevice.getCode();
-    console.log('---------------------------------------');
+    console.log('Current Code Started---------------------------------------');
     console.log(currentCode);
-    console.log('---------------------------------------');
+    console.log('Current Code Completed-------------------------------------');
   }
 
 }
