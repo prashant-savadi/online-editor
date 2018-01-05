@@ -29,15 +29,17 @@ export class FileBrowserComponent implements OnInit {
   }
 
   // ------------ publish check
-  t($event): void {
-    console.log('Test after deployment: started');
-    console.log($event);
-    console.log('Element ID: ' + $event.node.id);
-    console.log('Test after deployment: completed');
+  t(e): void {
+    console.log('Called method: t');
+    console.log(e);
+    if (this.iFile(e)) {
+      this.selectedFileIdParent.emit(String(e.node.id));
+    }
   }
   // ------------
 
   handleSelected($event): void {
+    console.log('Called method: handleSelected');
     if (this.iFile($event)) {
       this.selectedFileIdParent.emit(String($event.node.id));
     }
