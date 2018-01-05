@@ -38,6 +38,12 @@ export class FileBrowserComponent implements OnInit {
   }
   // ------------
 
+  //custom menus
+  onMenuItemSelected($event): void {
+    console.log('Called method: onMenuItemSelected');
+    console.log($event);
+  }
+
   handleSelected($event): void {
     console.log('Called method: handleSelected');
     if (this.iFile($event)) {
