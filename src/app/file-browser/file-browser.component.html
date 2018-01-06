@@ -31,24 +31,31 @@
 
 
   <!--&lt;!&ndash;<perfect-scrollbar class="ps" [perfectScrollbar]="config">-->
-    <div class="horizontal-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="stretch" fxFlex="auto">
-      <div class="scrollable-content">
+  <div class="horizontal-container" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="stretch" fxFlex="auto">
+    <div class="scrollable-content">
 
-        <tree
-          [tree]="tree" #treeComponent
-          [settings]="settings"
-          (nodeRemoved)="handleRemoved($event)"
-          (nodeRenamed)="handleRenamed($event)"
-          (nodeSelected)="handleSelected($event)"
-          (nodeMoved)="handleMoved($event)"
-          (nodeCreated)="handleCreated($event)"
-          (nodeExpanded)="handleExpanded($event)"
-          (nodeCollapsed)="handleCollapsed($event)"
-          (loadNextLevel)="handleNextLevel($event)"
-          (menuItemSelected)="onMenuItemSelected($event)">
-        </tree>
+      <tree
+        [tree]="tree" #treeComponent
+        [settings]="settings"
+        (nodeRemoved)="handleRemoved($event)"
+        (nodeRenamed)="handleRenamed($event)"
+        (nodeSelected)="handleSelected($event)"
+        (nodeMoved)="handleMoved($event)"
+        (nodeCreated)="handleCreated($event)"
+        (nodeExpanded)="handleExpanded($event)"
+        (nodeCollapsed)="handleCollapsed($event)"
+        (loadNextLevel)="handleNextLevel($event)"
+        (menuItemSelected)="onMenuItemSelected($event)">
+      </tree>
 
-      </div>
+
     </div>
+  </div>
   <!--</perfect-scrollbar>&ndash;&gt;-->
 </div>
+
+
+<ng-container *ngIf="fileClicked">
+  <app-coding-files [fileSelected]="fileSelected"></app-coding-files>
+</ng-container>
+

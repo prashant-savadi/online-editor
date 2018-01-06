@@ -24,6 +24,9 @@ export class FileBrowserComponent implements OnInit {
   public tree: TreeModel;
   @ViewChild('treeComponent') treeComponent;
 
+  fileClicked = false;
+  fileSelected = '';
+
   constructor(private mockServerSevice: MockServerService) {
     this.tree = mockServerSevice.getTreeModel();
   }
@@ -36,6 +39,7 @@ export class FileBrowserComponent implements OnInit {
       this.selectedFileIdParent.emit(String(e.node.id));
     }
   }
+
   // ------------
 
   //custom menus
@@ -47,9 +51,11 @@ export class FileBrowserComponent implements OnInit {
   handleSelected = ($event) => {
     console.log('Called method: handleSelected');
     if (this.iFile($event)) {
-      this.selectedFileIdParent.emit(String($event.node.id));
+      this.fileClicked = true;
+      this.fileSelected = $event.node.id;
+      // this.selectedFileIdParent.emit(String($event.node.id));
     }
-  }
+  };
 
   collpaseAll(): void {
     this.treeComponent.getControllerByNodeId(1).collapse();

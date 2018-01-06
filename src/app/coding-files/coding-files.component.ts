@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {AppService} from '../app.service';
 import {TreeModelService} from '../tree-model.service';
 import {MatTabChangeEvent} from '@angular/material';
@@ -11,11 +11,13 @@ import {MockServerService} from '../mock-server.service';
   templateUrl: './coding-files.component.html',
   styleUrls: ['./coding-files.component.scss']
 })
-export class CodingFilesComponent implements OnInit {
-
+export class CodingFilesComponent implements OnInit, OnChanges {
 
   @Input()
   selectedTab: string;
+
+  @Input()
+  fileSelected: string = '';
 
   @Output()
   focusChange: EventEmitter<MatTabChangeEvent>;
@@ -56,19 +58,23 @@ export class CodingFilesComponent implements OnInit {
   ngOnInit() {
   }
 
-  collectFileId($event) {
-    console.log('Collected File ID: ' + this.treeModelService.getFileName(Number($event)));
-    let selectedFileName = this.treeModelService.getFileName(Number($event));
-    // console.log('------------------------------- Map Size: ' + this.allFileCodesMap.size);
-    this.codeToUpdate = this.mockServerService.getFileCode(Number($event));
-    this.tabs.push({
-      name: selectedFileName,
-      code: this.codeToUpdate
-    });
-    this.activeTabIndex = this.tabs.length - 1;
-    this.displaySmallNavBar();
-    this.displayAllTabCodes();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['fileSelected']) {
+      console.log('By Omkar!!');
+      console.log('Collected File ID: ' + this.treeModelService.getFileName(Number(this.fileSelected)));
+      let selectedFileName = this.treeModelService.getFileName(Number(this.fileSelected));
+      // console.log('------------------------------- Map Size: ' + this.allFileCodesMap.size);
+      this.codeToUpdate = this.mockServerService.getFileCode(Number(this.fileSelected));
+      this.tabs.push({
+        name: selectedFileName,
+        code: this.codeToUpdate
+      });
+      this.activeTabIndex = this.tabs.length - 1;
+      this.displaySmallNavBar();
+      this.displayAllTabCodes();
+    }
   }
+
 
   sleep(seconds) {
     let e = new Date().getTime() + (seconds * 1000);
