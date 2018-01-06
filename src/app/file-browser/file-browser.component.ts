@@ -44,7 +44,7 @@ export class FileBrowserComponent implements OnInit {
     console.log($event);
   }
 
-  handleSelected($event): void {
+  handleSelected = ($event) => {
     console.log('Called method: handleSelected');
     if (this.iFile($event)) {
       this.selectedFileIdParent.emit(String($event.node.id));
